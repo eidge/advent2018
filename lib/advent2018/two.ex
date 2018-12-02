@@ -10,6 +10,25 @@ defmodule Advent2018.Two do
     IO.inspect(twos * threes, label: :result)
   end
 
+  def run(2) do
+    ids =
+      File.stream!("input/two.txt")
+      |> Stream.map(&String.trim/1)
+      |> Enum.into([])
+
+    combinations = for id1 <- ids, id2 <- ids, do: {id1, id2}
+
+    Enum.reduce_while(combinations, nil, fn {id1, id2}, nil ->
+      grouped_chars = Enum.zip(String.graphemes(id1), String.graphemes(id2))
+
+      case Enum.count(grouped_chars, fn {c1, c2} -> c1 != c2 end) do
+        1 -> {:halt, {id1, id2}}
+        _ -> {:cont, nil}
+      end
+    end)
+    |> IO.inspect(label: :result)
+  end
+
   defp checksum(entry) do
     values =
       entry
