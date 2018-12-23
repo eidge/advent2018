@@ -41,4 +41,27 @@ defmodule Advent2018.Two do
 
     {Enum.count(values, &(&1 == 2)), Enum.count(values, &(&1 == 3))}
   end
+
+  def do_stuff do
+    options = %{
+      headers: %{
+        user_agent: "Ms Explorer",
+        accept_language: "EN"
+      },
+      proxy: %{
+        ip: "69.69.69.11",
+        port: 8080
+      }
+    }
+
+    ibrowse_options = ibrowse_options(options)
+  end
+
+  defp ibrowse_options(%{proxy: %{ip: ip, port: port}}),
+    do: Keyword.new([{:proxy_host, ip}, {:proxy_port, port}])
+
+  defp ibrowse_options(%{proxy: _invalid_proxy}),
+    do: throw(:invalid_proxy)
+
+  defp ibrowse_options(_), do: Keyword.new()
 end
